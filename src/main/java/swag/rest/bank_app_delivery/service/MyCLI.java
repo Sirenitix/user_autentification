@@ -19,7 +19,7 @@ public class MyCLI implements CLIUI {
     }
 
     public double requestClientAmount(){
-        return 0;
+        return Double.parseDouble(scanner.nextLine());
     }
 
     public String requestClientAmountNumber() {

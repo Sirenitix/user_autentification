@@ -7,16 +7,20 @@ import swag.rest.bank_app_delivery.service.*;
 @Component
 public class TransactionWithdrawCLI {
     TransactionWithdraw transactionWithdraw;
-    WithdrawDepositOperationCLIUI withdrawDepositOperation;
+    WithdrawDepositOperationCLIUI withdrawDepositOperationCLIUI;
     AccountListingService accountListing;
 
-    public TransactionWithdrawCLI(TransactionWithdraw transactionWithdraw, WithdrawDepositOperationCLIUI withdrawDepositOperation, AccountListingService accountListing) {
+    public TransactionWithdrawCLI(TransactionWithdraw transactionWithdraw, WithdrawDepositOperationCLIUI withdrawDepositOperationCLIUI, AccountListingService accountListingService) {
         this.transactionWithdraw = transactionWithdraw;
-        this.withdrawDepositOperation = withdrawDepositOperation;
-        this.accountListing = accountListing;
+        this.withdrawDepositOperationCLIUI = withdrawDepositOperationCLIUI;
+        this.accountListing = accountListingService;
     }
 
     public void withdrawMoney(String clientID) {
-
+        System.out.println("Type account ID");
+        AccountWithdraw accountWithdraw = accountListing.getClientWithdrawAccount(clientID,withdrawDepositOperationCLIUI.requestClientAmountNumber());
+        System.out.println("Type Amount of money");
+        double amount = withdrawDepositOperationCLIUI.requestClientAmount();
+        transactionWithdraw.execute(accountWithdraw, amount);
     }
 }

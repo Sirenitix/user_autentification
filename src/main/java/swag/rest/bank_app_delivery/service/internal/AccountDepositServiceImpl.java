@@ -2,6 +2,7 @@ package swag.rest.bank_app_delivery.service.internal;
 
 import org.springframework.stereotype.Service;
 import swag.rest.bank_app_delivery.dao.AccountDAO;
+import swag.rest.bank_app_delivery.entity.Account;
 import swag.rest.bank_app_delivery.entity.AccountWithdraw;
 import swag.rest.bank_app_delivery.service.AccountDepositService;
 
@@ -14,7 +15,11 @@ public class AccountDepositServiceImpl implements AccountDepositService {
     }
 
     @Override
-    public void deposit(double amount, AccountWithdraw account) {
-
+    public void deposit(double amount, Account account) {
+        double balance =  accountDAO.getClientAccount("1",account.getClientID()).getBalance();
+        Account accountToUpdate = accountDAO.getClientAccount("1",account.getClientID());
+        accountToUpdate.setBalance(balance + amount);
+        accountDAO.updateAccount(account, accountToUpdate);
+        System.out.println("" + amount + "$ transferred to " + String.format("%03d%06d", 1, account.getBankID()));
     }
 }

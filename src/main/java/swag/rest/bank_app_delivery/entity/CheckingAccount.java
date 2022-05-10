@@ -11,6 +11,6 @@ public class CheckingAccount extends AccountWithdraw {
 
     @Override
     public String toString() {
-        return String.format("Account{id='%03d%06d', clientID='%s', balance=0.0, type='%s'}", super.getId(), super.getBankID(), super.getClientID(), super.getAccountType());
+        return String.format("Account{id='%03d%06d', clientID='%s', balance=%s, type='%s'}", super.getId(), super.getBankID(), super.getClientID(),super.getBalance(), super.getAccountType());
     }
 }

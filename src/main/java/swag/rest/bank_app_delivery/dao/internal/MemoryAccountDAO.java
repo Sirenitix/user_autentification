@@ -27,8 +27,8 @@ public class MemoryAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void updateAccount(Account account) {
-        System.out.println("Not supported yet");
+    public void updateAccount(Account accountWithdraw,Account account) {
+        this.accountList.set(accountList.indexOf(accountWithdraw), account);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MemoryAccountDAO implements AccountDAO {
 
     @Override
     public Account getClientAccount(String clientID, String accountID) {
-        return null;
+        return accountList.stream().filter(acc -> acc.getBankID() == Integer.parseInt(accountID.substring(accountID.length() - 1))).findFirst().get();
     }
 
 

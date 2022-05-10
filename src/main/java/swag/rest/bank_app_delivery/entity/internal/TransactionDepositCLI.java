@@ -2,6 +2,7 @@ package swag.rest.bank_app_delivery.entity.internal;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import swag.rest.bank_app_delivery.entity.AccountWithdraw;
 import swag.rest.bank_app_delivery.entity.TransactionDeposit;
 import swag.rest.bank_app_delivery.entity.WithdrawDepositOperationCLIUI;
 import swag.rest.bank_app_delivery.service.AccountListingService;
@@ -18,9 +19,11 @@ public class TransactionDepositCLI {
         this.accountListing = accountListingService;
     }
 
-
     public void depositMoney(String clientID) {
-        accountListing.getClientAccount(clientID,withdrawDepositOperationCLIUI.requestClientAmountNumber()) ;
-
+        System.out.println("Type account ID");
+        AccountWithdraw accountWithdraw = accountListing.getClientWithdrawAccount(clientID,withdrawDepositOperationCLIUI.requestClientAmountNumber());
+        System.out.println("Type Amount of money");
+        double amount = withdrawDepositOperationCLIUI.requestClientAmount();
+        transactionDeposit.execute(accountWithdraw, amount);
     }
 }
