@@ -67,8 +67,10 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
                         System.exit(0);
                     default:
                         System.out.println("Wrong input!");
+                        break;
                 }
-            } catch (ClassCastException c){
+            }
+                catch (ClassCastException c){
                     if (c.getMessage().contains("FixedAccount cannot be cast")) {
                         System.out.println("You can't withdraw from FIXED account!");
                     }
