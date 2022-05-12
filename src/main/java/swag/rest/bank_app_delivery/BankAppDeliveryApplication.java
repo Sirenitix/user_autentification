@@ -72,7 +72,7 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
             }
                 catch (ClassCastException c){
                     if (c.getMessage().contains("FixedAccount cannot be cast")) {
-                        System.out.println("Error!");
+                        System.out.println("FixedAccount cannot be cast!" + c.getMessage());
                     }
                 }
                 catch (Exception e){

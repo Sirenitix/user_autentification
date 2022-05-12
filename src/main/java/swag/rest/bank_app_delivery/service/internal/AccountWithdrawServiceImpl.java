@@ -17,9 +17,9 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
 
     @Override
     public void withdraw(double amount, AccountWithdraw accountWithdraw) {
-       double balance =  accountDAO.getClientWithdrawAccount("1",accountWithdraw.getClientID()).getBalance();
+       double balance =  accountDAO.getClientWithdrawAccount("1",String.valueOf(accountWithdraw.getBankID())).getBalance();
         if (balance > amount) {
-            AccountWithdraw accountToUpdate = accountDAO.getClientWithdrawAccount("1",accountWithdraw.getClientID());
+            AccountWithdraw accountToUpdate = accountDAO.getClientWithdrawAccount("1",String.valueOf(accountWithdraw.getBankID()));
             accountToUpdate.setBalance(balance - amount);
             accountDAO.updateAccount(accountWithdraw,accountToUpdate);
             System.out.println("" + amount + "$ transferred from " + String.format("%03d%06d", 1, accountWithdraw.getBankID()));
