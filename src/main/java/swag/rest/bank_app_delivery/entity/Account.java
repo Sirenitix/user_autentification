@@ -1,10 +1,10 @@
 package swag.rest.bank_app_delivery.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 
-@Data
+
+@Getter
 @NoArgsConstructor
 public abstract class Account {
     private AccountType accountType;

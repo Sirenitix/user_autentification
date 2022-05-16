@@ -50,8 +50,7 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
                         accountBasicCLI.getAccounts(clientID);
                         break;
                     case "2":
-                        System.out.println("Choose account type: [CHECKING, SAVING, FIXED]");
-                        accountBasicCLI.createAccountRequest(myCLI.requestAccountType(), clientID);
+                        accountBasicCLI.createAccountRequest(clientID);
                         break;
                     case "3":
                         transactionDepositCLI.depositMoney(clientID);

@@ -27,8 +27,8 @@ public class MemoryAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void updateAccount(Account accountWithdraw,Account account) {
-        this.accountList.set(accountList.indexOf(accountWithdraw), account);
+    public void updateAccount(Account accountToUpdate,Account updatedAccount) {
+        this.accountList.set(accountList.indexOf(accountToUpdate), updatedAccount);
     }
 
     @Override

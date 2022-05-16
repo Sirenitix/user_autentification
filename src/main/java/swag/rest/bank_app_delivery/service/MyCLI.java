@@ -29,6 +29,7 @@ public class MyCLI implements CLIUI {
 
     @Override
     public AccountType requestAccountType() {
+        System.out.println("Choose account type: [CHECKING, SAVING, FIXED]");
         return AccountType.valueOf(scanner.nextLine());
     }
 }
