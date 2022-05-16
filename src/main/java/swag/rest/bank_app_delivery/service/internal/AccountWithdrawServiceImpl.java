@@ -29,8 +29,6 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
                 case CHECKING:
                     updatedAccount = new CheckingAccount(AccountType.CHECKING,accountToUpdate.getId(),accountToUpdate.getClientID(),accountToUpdate.getBankID(),balance - amount, accountToUpdate.isWithdrawAllowed());
                     break;
-                case FIXED:
-                    throw new ClassCastException("FixedAccount cannot be cast");
                 default:
                     throw new IllegalStateException("Unexpected value: " + accountWithdraw.getAccountType());
             }
