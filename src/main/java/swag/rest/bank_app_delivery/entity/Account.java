@@ -4,10 +4,11 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
-@Getter
+@Data
 @NoArgsConstructor
 public abstract class Account {
     private AccountType accountType;

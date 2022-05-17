@@ -1,9 +1,15 @@
 package swag.rest.bank_app_delivery.entity;
 
+import lombok.NoArgsConstructor;
+
 
 public class SavingAccount extends AccountWithdraw{
     public SavingAccount(AccountType accountType, long id, String clientID, long bankID, double balance, boolean withdrawAllowed) {
         super(accountType, id, clientID, bankID, balance, withdrawAllowed);
+    }
+
+    public SavingAccount() {
+
     }
 
     @Override

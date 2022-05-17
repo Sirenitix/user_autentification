@@ -1,15 +1,20 @@
 package swag.rest.bank_app_delivery.entity.internal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.BankCore;
 import swag.rest.bank_app_delivery.service.internal.AccountListingServiceImpl;
+import swag.rest.bank_app_delivery.service.internal.DBService;
 
 @Component
 public class AccountBasicCLI {
     CreateAccountOperationUI createAccountOperationUI;
     BankCore bankCore;
     AccountListingServiceImpl accountListing;
+    @Autowired
+    DBService dbService;
+
 
 
     public AccountBasicCLI(CreateAccountOperationUI createAccountOperationUI, BankCore bankCore, AccountListingServiceImpl accountListing) {
@@ -19,7 +24,7 @@ public class AccountBasicCLI {
     }
 
     public void getAccounts(String clientID){
-        System.out.println(accountListing.getClientAccounts(clientID));
+        System.out.println(dbService.getClientAccounts());
     }
 
     public void createAccountRequest(String clientID){

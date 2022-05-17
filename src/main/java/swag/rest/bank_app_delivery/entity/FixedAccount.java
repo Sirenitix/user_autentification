@@ -8,6 +8,11 @@ public class FixedAccount extends AccountDeposit{
         super(accountType, id, clientID, bankID, balance, withdrawAllowed);
     }
 
+    public FixedAccount() {
+        super();
+
+    }
+
     @Override
     public String toString() {
         return String.format("Account{id='%03d%06d', clientID='%s', balance=%s, type='%s'}", super.getId(), super.getBankID(), super.getClientID(),super.getBalance(), super.getAccountType());

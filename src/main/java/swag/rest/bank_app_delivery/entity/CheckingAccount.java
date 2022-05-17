@@ -1,8 +1,9 @@
 package swag.rest.bank_app_delivery.entity;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
+@NoArgsConstructor
 public class CheckingAccount extends AccountWithdraw {
 
     public CheckingAccount(AccountType accountType, long id, String clientID, long bankID, double balance, boolean withdrawAllowed) {
