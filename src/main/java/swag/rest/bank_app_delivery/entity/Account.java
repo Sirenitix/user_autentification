@@ -2,12 +2,16 @@ package swag.rest.bank_app_delivery.entity;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 
+@Entity
 @Getter
 @NoArgsConstructor
 public abstract class Account {
     private AccountType accountType;
+    @Id
     private long id;
     private String clientID;
 

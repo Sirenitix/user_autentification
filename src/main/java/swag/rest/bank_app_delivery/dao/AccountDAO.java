@@ -1,5 +1,6 @@
 package swag.rest.bank_app_delivery.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import swag.rest.bank_app_delivery.entity.*;
 

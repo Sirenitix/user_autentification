@@ -8,11 +8,11 @@ import swag.rest.bank_app_delivery.entity.AccountWithdraw;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class MemoryAccountDAO implements AccountDAO {
+
     public List<Account> accountList = new ArrayList<>();
 
     @Override

@@ -4,7 +4,12 @@ package swag.rest.bank_app_delivery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import swag.rest.bank_app_delivery.entity.AccountType;
 import swag.rest.bank_app_delivery.entity.internal.AccountBasicCLI;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +21,9 @@ import swag.rest.bank_app_delivery.service.MyCLI;
 import java.util.Scanner;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages="swag.rest.bank_app_delivery")
+@EnableTransactionManagement
+@EntityScan(basePackages="swag.rest.bank_app_delivery")
 public class BankAppDeliveryApplication implements CommandLineRunner {
 
     @Autowired
@@ -40,7 +48,7 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
             System.out.printf("Enter operation number: \n");
             System.out.println(helpMessage);
             while (true) {
-                try {
+//                try {
                 AccountBasicCLI accountBasicCLI = context.getBean(AccountBasicCLI.class);
                 MyCLI myCLI = context.getBean(MyCLI.class);
                 TransactionDepositCLI transactionDepositCLI = context.getBean(TransactionDepositCLI.class);
@@ -68,15 +76,15 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
                         System.out.println("Wrong input!");
                         break;
                 }
-            }
-                catch (ClassCastException c){
-                    if (c.getMessage().contains("FixedAccount cannot be cast")) {
-                        System.out.println("FixedAccount cannot be cast!" + c.getMessage());
-                    }
-                }
-                catch (Exception e){
-                    System.out.println("Wrong input! " + e.getMessage());
-                }
+//            }
+//                catch (ClassCastException c){
+//                    if (c.getMessage().contains("FixedAccount cannot be cast")) {
+//                        System.out.println("FixedAccount cannot be cast!" + c.getMessage());
+//                    }
+//                }
+//                catch (Exception e){
+//                    System.out.println("Wrong input! " + e.getMessage());
+//                }
 
         }
 
