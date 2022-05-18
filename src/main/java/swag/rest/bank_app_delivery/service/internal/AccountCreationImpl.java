@@ -22,12 +22,15 @@ public class AccountCreationImpl implements AccountCreationService {
         switch (accountType){
             case SAVING:
                 dbService.createNewAccount(new SavingAccount(accountType, bankID, clientID, accountID, 0.0, true));
+                System.out.println("Bank account created");
                 break;
             case FIXED:
                 dbService.createNewAccount(new FixedAccount(accountType, bankID, clientID, accountID, 0.0, false));
+                System.out.println("Bank account created");
                 break;
             case CHECKING:
                 dbService.createNewAccount(new CheckingAccount(accountType, bankID, clientID, accountID, 0.0, true));
+                System.out.println("Bank account created");
                 break;
             default:
                 System.out.println("Wrong input!");
