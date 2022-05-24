@@ -6,3 +6,7 @@ create table account (
      withdrawAllowed VARCHAR(50),
      accountType VARCHAR(50)
 );
+
+create table transaction (
+    transaction VARCHAR(500)
+);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import swag.rest.bank_app_delivery.dao.AccountDAO;
+import swag.rest.bank_app_delivery.dao.TransactionDAO;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.AccountWithdrawService;
 import swag.rest.bank_app_delivery.service.DBService;
@@ -16,6 +17,9 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
     @Autowired
     DBService dbService;
 
+    @Autowired
+    TransactionDAO transactionDAO;
+
     public AccountWithdrawServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
@@ -26,7 +30,9 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
         if (balance >= amount) {
             accountWithdraw.setBalance(balance - amount);
             dbService.updateAccount(accountWithdraw);
-            System.out.println("" + amount + "$ transferred from " + String.format("%03d%06d", 1, accountWithdraw.getBankID()));
+            String transaction = "" + amount + "$ transferred from " + String.format("%03d%06d", 1, accountWithdraw.getBankID());
+            transactionDAO.addTransaction(new Transaction(transaction));
+            System.out.println(transaction);
         }else {
             System.out.println("Not enough money");
         }

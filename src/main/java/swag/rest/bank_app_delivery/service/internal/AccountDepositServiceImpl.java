@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import swag.rest.bank_app_delivery.dao.AccountDAO;
+import swag.rest.bank_app_delivery.dao.TransactionDAO;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.AccountDepositService;
 import swag.rest.bank_app_delivery.service.DBService;
@@ -15,6 +16,9 @@ public class AccountDepositServiceImpl implements AccountDepositService {
     @Autowired
     DBService dbService;
 
+    @Autowired
+    TransactionDAO transactionDAO;
+
     public AccountDepositServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
@@ -24,6 +28,8 @@ public class AccountDepositServiceImpl implements AccountDepositService {
         double balance =  dbService.getClientAccountById(account.getBankID()).getBalance();
         account.setBalance(balance + amount);
         dbService.updateAccount(account);
-        System.out.println("" + amount + "$ transferred to " + String.format("%03d%06d", 1, account.getBankID()));
+        String transaction = "" + amount + "$ transferred to " + String.format("%03d%06d", 1, account.getBankID());
+        transactionDAO.addTransaction(new Transaction(transaction));
+        System.out.println(transaction);
     }
 }
