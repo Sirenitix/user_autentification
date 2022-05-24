@@ -4,22 +4,14 @@ package swag.rest.bank_app_delivery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import swag.rest.bank_app_delivery.entity.AccountType;
 import swag.rest.bank_app_delivery.entity.internal.AccountBasicCLI;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import swag.rest.bank_app_delivery.entity.internal.TransactionDepositCLI;
 import swag.rest.bank_app_delivery.entity.internal.TransactionWithdrawCLI;
 import swag.rest.bank_app_delivery.service.MyCLI;
-import swag.rest.bank_app_delivery.service.internal.DBService;
-
-import java.util.Scanner;
+import swag.rest.bank_app_delivery.service.DBService;
 
 @SpringBootApplication
 @EnableJpaRepositories("swag.rest.bank_app_delivery")
@@ -37,9 +29,6 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
 
     @Override
     public void run(String... arg0){
-            //dbService.insertData();
-//            System.out.println(dbService.getClientAccounts());
-//            System.out.println(dbService.getClientAccountById(2));
             String  helpMessage  =
                     "1 - show accounts\n" +
                     "2 - create account\n" +
@@ -49,8 +38,8 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
                     "6 - this message\n" +
                     "7 - exit";
             String clientID = "1";
-            System.out.printf("Welcome to CLI bank service\n");
-            System.out.printf("Enter operation number: \n");
+            System.out.print("Welcome to CLI bank service\n");
+            System.out.print("Enter operation number: \n");
             System.out.println(helpMessage);
             while (true) {
                 try {

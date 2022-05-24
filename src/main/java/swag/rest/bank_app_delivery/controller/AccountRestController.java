@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import swag.rest.bank_app_delivery.entity.Account;
-import swag.rest.bank_app_delivery.service.internal.DBService;
+import swag.rest.bank_app_delivery.service.DBService;
 
 import java.util.List;
 

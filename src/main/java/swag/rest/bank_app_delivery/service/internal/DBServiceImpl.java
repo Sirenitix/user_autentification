@@ -1,23 +1,17 @@
 package swag.rest.bank_app_delivery.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import swag.rest.bank_app_delivery.dao.AccountMapper;
 import swag.rest.bank_app_delivery.entity.Account;
-import swag.rest.bank_app_delivery.entity.CheckingAccount;
-import swag.rest.bank_app_delivery.entity.SavingAccount;
+import swag.rest.bank_app_delivery.service.DBService;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class DBService {
+@Component
+public class DBServiceImpl implements DBService {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -28,7 +22,7 @@ public class DBService {
     private final String SQL_INSERT_ACCOUNT = "insert into account(accountType, id, clientID,  bankID,  balance, withdrawAllowed) values(?, ?, ?, ?, ?, ?)";
     private final String SQL_UPDATE_BALANCE = "update account set balance = ? where bankid = ?";
 
-    public DBService(JdbcTemplate jdbcTemplate) {
+    public DBServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

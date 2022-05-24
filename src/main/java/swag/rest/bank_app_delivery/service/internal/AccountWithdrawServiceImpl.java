@@ -1,17 +1,18 @@
 package swag.rest.bank_app_delivery.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import swag.rest.bank_app_delivery.dao.AccountDAO;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.AccountWithdrawService;
-
-import static swag.rest.bank_app_delivery.entity.AccountType.CHECKING;
+import swag.rest.bank_app_delivery.service.DBService;
 
 @Service
 public class AccountWithdrawServiceImpl implements AccountWithdrawService {
 
     AccountDAO accountDAO;
+    @Qualifier("DBServiceImpl")
     @Autowired
     DBService dbService;
 

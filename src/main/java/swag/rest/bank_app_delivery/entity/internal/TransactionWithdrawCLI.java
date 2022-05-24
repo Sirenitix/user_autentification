@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.*;
-import swag.rest.bank_app_delivery.service.internal.DBService;
+import swag.rest.bank_app_delivery.service.DBService;
 
 @Component
 public class TransactionWithdrawCLI {
