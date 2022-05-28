@@ -65,13 +65,13 @@ public class AccountRestController  {
     @PostMapping("/accounts/{account_id}/withdraw")
     public String withdrawProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
         transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);
-        return "success";
+        return "" + amount + "$ transferred to " + account_id;
     }
 
     @PostMapping("/accounts/{account_id}/deposit")
     public String depositProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
         transactionDeposit.execute(dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);
-        return "success";
+        return  "" + amount + "$ transferred from " + account_id;
     }
 
 
