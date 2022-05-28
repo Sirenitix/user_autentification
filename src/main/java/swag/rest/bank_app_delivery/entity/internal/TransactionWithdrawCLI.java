@@ -1,6 +1,7 @@
 package swag.rest.bank_app_delivery.entity.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.*;
@@ -11,6 +12,9 @@ public class TransactionWithdrawCLI {
     TransactionWithdraw transactionWithdraw;
     WithdrawDepositOperationCLIUI withdrawDepositOperationCLIUI;
     AccountListingService accountListing;
+
+
+    @Qualifier("DBServiceImpl")
     @Autowired
     DBService dbService;
 
@@ -23,7 +27,7 @@ public class TransactionWithdrawCLI {
     public void withdrawMoney(String clientID) {
         System.out.println("Type account ID");
         String accountID = withdrawDepositOperationCLIUI.requestClientAmountNumber();
-        AccountWithdraw accountWithdraw = (AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(accountID.charAt(accountID.length() - 1)+""));
+        AccountWithdraw accountWithdraw = (AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(accountID) - 1000000);
         System.out.println("Type Amount of money");
         double amount = withdrawDepositOperationCLIUI.requestClientAmount();
         transactionWithdraw.execute(accountWithdraw, amount);

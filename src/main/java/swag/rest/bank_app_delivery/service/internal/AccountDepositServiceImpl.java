@@ -25,11 +25,11 @@ public class AccountDepositServiceImpl implements AccountDepositService {
 
     @Override
     public void deposit(double amount, Account account) {
-        double balance =  dbService.getClientAccountById(account.getBankID()).getBalance();
+        double balance =  dbService.getClientAccountById((int) account.getBankID()).getBalance();
         account.setBalance(balance + amount);
         dbService.updateAccount(account);
         String transaction = "" + amount + "$ transferred to " + String.format("%03d%06d", 1, account.getBankID());
-        transactionDAO.addTransaction(new Transaction(transaction));
+        transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, account.getBankID()),transaction,balance+amount));
         System.out.println(transaction);
     }
 }

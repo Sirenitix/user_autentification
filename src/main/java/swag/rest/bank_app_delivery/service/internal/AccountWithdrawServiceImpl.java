@@ -13,6 +13,7 @@ import swag.rest.bank_app_delivery.service.DBService;
 public class AccountWithdrawServiceImpl implements AccountWithdrawService {
 
     AccountDAO accountDAO;
+
     @Qualifier("DBServiceImpl")
     @Autowired
     DBService dbService;
@@ -26,12 +27,12 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
 
     @Override
     public void withdraw(double amount, AccountWithdraw accountWithdraw) {
-        double balance =  dbService.getClientAccountById(accountWithdraw.getBankID()).getBalance();
+        double balance =  dbService.getClientAccountById((int) accountWithdraw.getBankID()).getBalance();
         if (balance >= amount) {
             accountWithdraw.setBalance(balance - amount);
             dbService.updateAccount(accountWithdraw);
             String transaction = "" + amount + "$ transferred from " + String.format("%03d%06d", 1, accountWithdraw.getBankID());
-            transactionDAO.addTransaction(new Transaction(transaction));
+            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),transaction,balance-amount));
             System.out.println(transaction);
         }else {
             System.out.println("Not enough money");

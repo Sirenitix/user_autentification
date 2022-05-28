@@ -8,5 +8,7 @@ create table account (
 );
 
 create table transaction (
-    transaction VARCHAR(500)
+    accountID VARCHAR(500),
+    transaction VARCHAR(500),
+    currentBalance DECIMAL(5,2)
 );
