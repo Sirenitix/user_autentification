@@ -35,6 +35,7 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
             transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),transaction,balance-amount));
             System.out.println(transaction);
         }else {
+            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),"Not enough money",balance));
             System.out.println("Not enough money");
         }
     }
