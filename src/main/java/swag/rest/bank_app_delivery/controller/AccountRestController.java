@@ -1,6 +1,6 @@
 package swag.rest.bank_app_delivery.controller;
 
-import io.swagger.annotations.Api;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import swag.rest.bank_app_delivery.service.DBService;
 
 import java.util.List;
 
-@Api
+
 @RestController("/")
 public class AccountRestController  {
 
