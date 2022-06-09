@@ -3,6 +3,7 @@ package swag.rest.bank_app_delivery.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import swag.rest.bank_app_delivery.dao.TransactionDAO;
 import swag.rest.bank_app_delivery.entity.*;
@@ -46,28 +47,33 @@ public class AccountRestController  {
         return "New account created";
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/accounts/{account_id}")
     public String deleteProduct(@PathVariable("account_id")String account_id){
         dbService.deleteClientAccountById(Integer.parseInt(account_id) - 1000000);
         return "Account "+ account_id + " deleted";
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/accounts/{account_id}")
     public Account getProduct(@PathVariable("account_id")String account_id){
         return dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000);
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/accounts/{account_id}/transactions")
     public List<Transaction> getProducts(@PathVariable("account_id")String account_id){
         return transactionDAO.getTransactionsById(account_id);
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/accounts/{account_id}/withdraw")
     public String withdrawProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
         transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);
         return "" + amount + "$ transferred to " + account_id;
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/accounts/{account_id}/deposit")
     public String depositProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
         transactionDeposit.execute(dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);

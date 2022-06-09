@@ -12,3 +12,11 @@ create table transaction (
     transaction VARCHAR(500),
     currentBalance DECIMAL(5,2)
 );
+
+create table users (
+                       id INT AUTO_INCREMENT  PRIMARY KEY,
+                       username VARCHAR(250) NOT NULL,
+                       password VARCHAR(250) NOT NULL,
+                       role VARCHAR(250) NOT NULL,
+                       enabled BOOLEAN
+);
