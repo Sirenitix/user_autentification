@@ -1,6 +1,8 @@
 package swag.rest.bank_app_delivery.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -89,5 +91,16 @@ public class AccountRestController  {
         return  "" + amount + "$ transferred from " + account_id;
     }
 
+    @Operation(description = "Login")
+    @PostMapping("/login")
+    public void fakeLogin(@RequestBody User user) {
+        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
+
+    @Operation(description = "Logout")
+    @PostMapping("/logout")
+    public void fakeLogout() {
+        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
 
 }

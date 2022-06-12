@@ -44,17 +44,17 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                         for (Cookie cookie : cookies) {
                             if (cookie.getName().equals("token")) {
                                 token = cookie.getValue();
-                            } else {
+                                UsernamePasswordAuthenticationToken authenticationToken = JwtUtil.parseToken(token);
+                                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                                System.out.println(SecurityContextHolder.getContext().getAuthentication());
                                 filterChain.doFilter(request, response);
                             }
-
                         }
+                    }   else  {
+                        System.out.println(token);
+                        filterChain.doFilter(request, response);
                     }
-                    System.out.println(token);
-                    UsernamePasswordAuthenticationToken authenticationToken = JwtUtil.parseToken(token);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    System.out.println(SecurityContextHolder.getContext().getAuthentication());
-                    filterChain.doFilter(request, response);
+
                 }
                 catch (Exception e) {
                     log.error(String.format("Error auth token: %s", token), e);

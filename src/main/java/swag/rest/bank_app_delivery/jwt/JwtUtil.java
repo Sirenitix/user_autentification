@@ -79,8 +79,7 @@ public abstract class JwtUtil {
 
 
 
-    public static UsernamePasswordAuthenticationToken parseToken(String token) throws JOSEException, ParseException,
-            BadJOSEException {
+    public static UsernamePasswordAuthenticationToken parseToken(String token) throws Exception {
 
         byte[] secretKey = SECRET.getBytes();
         SignedJWT signedJWT = SignedJWT.parse(token);

@@ -23,7 +23,7 @@ import swag.rest.bank_app_delivery.service.internal.CustomUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private final CustomUserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -47,7 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/authenticate/**", "/register/**").permitAll()
+                .logout().logoutUrl("/logout").deleteCookies("token")
+                .and()
+                .authorizeRequests().antMatchers(HttpMethod.POST,  "/register").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/users/**").hasAuthority("USER")
                 .and()
@@ -61,6 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/index.html/**" );
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
     }
 }

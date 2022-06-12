@@ -1,6 +1,9 @@
 package swag.rest.bank_app_delivery;
 
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -23,10 +26,6 @@ public class BankAppDeliveryApplication implements CommandLineRunner {
 
     @Autowired
     private ApplicationContext context;
-
-
-
-
 
     @Qualifier("DBServiceImpl")
     @Autowired
