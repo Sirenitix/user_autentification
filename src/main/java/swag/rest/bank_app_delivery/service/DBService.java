@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface DBService {
 
-    List<Account> getClientAccounts();
+    List<Account> getClientAccounts(int clientID);
 
     void createNewAccount(Account account);
 

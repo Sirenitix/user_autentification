@@ -2,24 +2,33 @@ package swag.rest.bank_app_delivery.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import swag.rest.bank_app_delivery.dao.TransactionDAO;
 import swag.rest.bank_app_delivery.entity.*;
-import swag.rest.bank_app_delivery.entity.internal.TransactionDepositCLI;
-import swag.rest.bank_app_delivery.entity.internal.TransactionWithdrawCLI;
+import swag.rest.bank_app_delivery.jwt.JwtUtil;
 import swag.rest.bank_app_delivery.service.BankCore;
 import swag.rest.bank_app_delivery.service.DBService;
 import swag.rest.bank_app_delivery.service.UserService;
+import swag.rest.bank_app_delivery.service.internal.CustomUserDetailsService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController("/")
@@ -37,6 +46,11 @@ public class AccountRestController  {
     TransactionWithdraw transactionWithdraw;
     @Autowired
     UserService userService;
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    JwtUtil jwtUtil;
+
 
     @PostMapping("/register")
     public ResponseEntity<User> save(@RequestBody User user) {
@@ -49,12 +63,15 @@ public class AccountRestController  {
 
     @GetMapping("/accounts")
     public List<Account> getProducts(){
-        return dbService.getClientAccounts();
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return dbService.getClientAccounts(userService.findByUsername(auth).get().getId());
     }
 
     @PostMapping("/accounts")
     public String createProduct(@RequestParam("account_type") String account_type){
-        bankCore.createNewAccount(AccountType.valueOf(account_type),"1");
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(auth);
+        bankCore.createNewAccount(AccountType.valueOf(account_type),String.valueOf(userService.findByUsername(auth).get().getId()));
         return "New account created";
     }
 
@@ -97,10 +114,26 @@ public class AccountRestController  {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
+    @PostMapping("/authenticate")
+    public ResponseEntity<String> authenticateUser(@Valid @RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+        user.setRole("ROLE_USER");
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(),
+                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        Cookie cookie = new Cookie("token", jwt);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+        return ResponseEntity.ok(jwt);
+    }
+
     @Operation(description = "Logout")
     @PostMapping("/logout")
     public void fakeLogout() {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
+
+
 
 }

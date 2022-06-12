@@ -19,7 +19,7 @@ public class DBServiceImpl implements DBService {
 
 
 
-    private final String SQL_GET_ALL = "select * from account";
+    private final String SQL_GET_ALL = "select * from account where clientid = ?";
     private final String SQL_GET_MAX_ID = "select max(bankid) from account";
     private final String SQL_FIND_ACCOUNT = "select * from account where bankID = ?";
     private final String SQL_INSERT_ACCOUNT = "insert into account(accountType, id, clientID,  bankID,  balance, withdrawAllowed) values(?, ?, ?, ?, ?, ?)";
@@ -37,8 +37,8 @@ public class DBServiceImpl implements DBService {
         jdbcTemplate.execute("insert into account(id,clientID,bankID,balance,withdrawAllowed,accountType) values(1,'1',2,0.0,true,'SAVING')");
     }
 
-    public List<Account> getClientAccounts() {
-        return jdbcTemplate.query(SQL_GET_ALL, new AccountMapper());
+    public List<Account> getClientAccounts(int id) {
+        return jdbcTemplate.query(SQL_GET_ALL, new Object[] { id }, new AccountMapper());
     }
 
     public void createNewAccount(Account account) {

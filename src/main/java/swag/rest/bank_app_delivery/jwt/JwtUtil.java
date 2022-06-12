@@ -32,11 +32,12 @@ public abstract class JwtUtil {
 
     public static String createAccessToken(String username, String issuer, List<String> roles) {
         try {
+            Date now = new Date();
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(username)
                     .issuer(issuer)
                     .claim("roles", roles)
-                    .expirationTime(Date.from(Instant.now().plusSeconds(expireHourToken * 36000)))
+                    .expirationTime(new Date(now.getTime() + 10000))
                     .issueTime(new Date())
                     .build();
 

@@ -18,7 +18,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+
+
     private static final String USER_NOT_FOUND_MESSAGE = "User with username %s not found";
+
 
 
     @Transactional(readOnly = true)

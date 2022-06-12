@@ -26,7 +26,7 @@ public class AccountBasicCLI {
     }
 
     public void getAccounts(String clientID){
-        System.out.println(dbService.getClientAccounts());
+        System.out.println(dbService.getClientAccounts(Integer.parseInt(clientID)));
     }
 
     public void createAccountRequest(String clientID){
