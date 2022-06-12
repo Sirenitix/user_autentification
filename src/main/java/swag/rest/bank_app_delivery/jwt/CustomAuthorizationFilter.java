@@ -53,6 +53,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     System.out.println(token);
                     UsernamePasswordAuthenticationToken authenticationToken = JwtUtil.parseToken(token);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    System.out.println(SecurityContextHolder.getContext().getAuthentication());
                     filterChain.doFilter(request, response);
                 }
                 catch (Exception e) {
