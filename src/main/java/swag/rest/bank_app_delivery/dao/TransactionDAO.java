@@ -9,5 +9,5 @@ import java.util.List;
 public interface TransactionDAO {
     List<Transaction> getTransactions();
     void addTransaction(Transaction transaction);
-    List<Transaction> getTransactionsById(String id);
+    List<Transaction> getTransactionsById(String id, int clientID);
 }

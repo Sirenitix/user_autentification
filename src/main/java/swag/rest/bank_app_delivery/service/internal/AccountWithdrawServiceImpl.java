@@ -26,16 +26,16 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
     }
 
     @Override
-    public void withdraw(double amount, AccountWithdraw accountWithdraw) {
-        double balance =  dbService.getClientAccountById((int) accountWithdraw.getBankID()).getBalance();
+    public void withdraw(double amount, AccountWithdraw accountWithdraw, int clientID) {
+        double balance =  dbService.getClientAccountById((int) accountWithdraw.getBankID(), clientID).getBalance();
         if (balance >= amount) {
             accountWithdraw.setBalance(balance - amount);
             dbService.updateAccount(accountWithdraw);
             String transaction = "" + amount + "$ transferred from " + String.format("%03d%06d", 1, accountWithdraw.getBankID());
-            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),transaction,balance-amount));
+            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()), String.valueOf(accountWithdraw.getClientID()),transaction,balance-amount));
             System.out.println(transaction);
         }else {
-            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),"Not enough money",balance));
+            transactionDAO.addTransaction(new Transaction(String.format("%03d%06d", 1, accountWithdraw.getBankID()),String.valueOf(accountWithdraw.getClientID()),"Not enough money",balance));
             System.out.println("Not enough money");
         }
     }

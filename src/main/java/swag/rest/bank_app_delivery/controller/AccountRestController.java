@@ -62,13 +62,13 @@ public class AccountRestController  {
 
 
     @GetMapping("/accounts")
-    public List<Account> getProducts(){
+    public List<Account> getAccounts(){
         String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return dbService.getClientAccounts(userService.findByUsername(auth).get().getId());
     }
 
     @PostMapping("/accounts")
-    public String createProduct(@RequestParam("account_type") String account_type){
+    public String createAccount(@RequestParam("account_type") String account_type){
         String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(auth);
         bankCore.createNewAccount(AccountType.valueOf(account_type),String.valueOf(userService.findByUsername(auth).get().getId()));
@@ -77,35 +77,59 @@ public class AccountRestController  {
 
 
     @DeleteMapping("/accounts/{account_id}")
-    public String deleteProduct(@PathVariable("account_id")String account_id){
-        dbService.deleteClientAccountById(Integer.parseInt(account_id) - 1000000);
+    public String deleteAccount(@PathVariable("account_id")String account_id){
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        dbService.deleteClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId());
         return "Account "+ account_id + " deleted";
     }
 
 
     @GetMapping("/accounts/{account_id}")
-    public Account getProduct(@PathVariable("account_id")String account_id){
-        return dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000);
+    public Account getAccount(@PathVariable("account_id")String account_id){
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId());
     }
 
 
     @GetMapping("/accounts/{account_id}/transactions")
-    public List<Transaction> getProducts(@PathVariable("account_id")String account_id){
-        return transactionDAO.getTransactionsById(account_id);
+    public List<Transaction> getAccounts(@PathVariable("account_id")String account_id){
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return transactionDAO.getTransactionsById(account_id, userService.findByUsername(auth).get().getId());
     }
 
 
     @PostMapping("/accounts/{account_id}/withdraw")
-    public String withdrawProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
-        transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);
+    public String withdrawAccount(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()),amount, userService.findByUsername(auth).get().getId());
         return "" + amount + "$ transferred to " + account_id;
     }
 
 
     @PostMapping("/accounts/{account_id}/deposit")
-    public String depositProduct(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
-        transactionDeposit.execute(dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000),amount);
+    public String depositAccount(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount){
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        transactionDeposit.execute(dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()),amount, userService.findByUsername(auth).get().getId());
         return  "" + amount + "$ transferred from " + account_id;
+    }
+
+    @PostMapping("/accounts/{account_id}/transfer")
+    public String transferAccount(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount, @RequestBody Destination_account destination_account) throws Exception {
+        String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        double balance =  dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).getBalance();
+        System.out.println(destination_account.getDestination_account_id() + " destination_account");
+        if(balance >= amount && dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()){
+            transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()),amount, userService.findByUsername(auth).get().getId());
+            transactionDeposit.execute(
+                    dbService.getClientAccountById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000, userService.findById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000).get().getId()),
+                    amount,
+                    userService.findById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000).get().getId());
+        }else if(!dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()){
+            throw new Exception("You can't transfer from FIXED account");
+        }else {
+            throw new Exception("Not enough money");
+        }
+        return  "" + amount + "$ transferred from " + account_id + " to " + destination_account.getDestination_account_id();
     }
 
     @Operation(description = "Login")

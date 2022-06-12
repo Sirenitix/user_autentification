@@ -26,14 +26,15 @@ public class MemoryTransactionDAO implements TransactionDAO {
     }
 
     @Override
-    public List<Transaction> getTransactionsById(String id) {
-        final String SQL_FIND_ACCOUNT = "select * from transaction where accountID = ?";
-        return jdbcTemplate.query(SQL_FIND_ACCOUNT,new TransactionMapper(),new Object[] { id });
+    public List<Transaction> getTransactionsById(String id, int clientID) {
+        final String SQL_FIND_ACCOUNT = "select * from transaction where accountID = ? and clientID = ?";
+        return jdbcTemplate.query(SQL_FIND_ACCOUNT,new TransactionMapper(),new Object[] { id, clientID });
     }
 
     @Override
     public void addTransaction(Transaction transaction) {
-        final String SQL_INSERT_ACCOUNT = "insert into transaction(accountID,transaction,currentBalance) values(?,?,?)";
-        jdbcTemplate.update(SQL_INSERT_ACCOUNT, transaction.getAccountID(),transaction.getTransaction(),transaction.getCurrentBalance());
+        final String SQL_INSERT_ACCOUNT = "insert into transaction(accountID,clientID,transaction,currentBalance) values(?,?,?,?)";
+        jdbcTemplate.update(SQL_INSERT_ACCOUNT, transaction.getAccountID(), transaction.getClientID() ,transaction.getTransaction(),transaction.getCurrentBalance());
+
     }
 }

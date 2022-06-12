@@ -9,6 +9,7 @@ create table account (
 
 create table transaction (
     accountID VARCHAR(500),
+    clientID VARCHAR(50),
     transaction VARCHAR(500),
     currentBalance DECIMAL(5,2)
 );

@@ -12,11 +12,11 @@ public interface DBService {
 
     void createNewAccount(Account account);
 
-    Account getClientAccountById(int id);
+    Account getClientAccountById(int id, int clientID);
 
     int getClientAccountMaxId();
 
     void updateAccount(Account account);
 
-    void deleteClientAccountById(int id);
+    void deleteClientAccountById(int id, int clientID);
 }

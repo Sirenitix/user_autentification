@@ -27,9 +27,9 @@ public class TransactionWithdrawCLI {
     public void withdrawMoney(String clientID) {
         System.out.println("Type account ID");
         String accountID = withdrawDepositOperationCLIUI.requestClientAmountNumber();
-        AccountWithdraw accountWithdraw = (AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(accountID) - 1000000);
+        AccountWithdraw accountWithdraw = (AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(accountID) - 1000000, Integer.parseInt(clientID));
         System.out.println("Type Amount of money");
         double amount = withdrawDepositOperationCLIUI.requestClientAmount();
-        transactionWithdraw.execute(accountWithdraw, amount);
+        transactionWithdraw.execute(accountWithdraw, amount, Integer.parseInt(clientID));
     }
 }

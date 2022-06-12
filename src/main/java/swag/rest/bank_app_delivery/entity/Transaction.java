@@ -7,6 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Transaction {
     String accountID;
+    String clientID;
     String transaction;
     double currentBalance;
 }

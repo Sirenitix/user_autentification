@@ -7,5 +7,5 @@ import swag.rest.bank_app_delivery.entity.AccountWithdraw;
 
 @Service
 public interface AccountDepositService {
-    void deposit(double amount, Account account);
+    void deposit(double amount, Account account, int clientID);
 }
