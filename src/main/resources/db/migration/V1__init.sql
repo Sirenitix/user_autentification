@@ -13,7 +13,7 @@ create table transaction (
     currentBalance DECIMAL(5,2)
 );
 
-create table users (
+create table user (
                        id INT AUTO_INCREMENT  PRIMARY KEY,
                        username VARCHAR(250) NOT NULL,
                        password VARCHAR(250) NOT NULL,
