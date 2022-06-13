@@ -1,4 +1,4 @@
-package swag.rest.bank_app_delivery.entity.internal;
+package swag.rest.bank_app_delivery.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

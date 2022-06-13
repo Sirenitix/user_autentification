@@ -1,11 +1,10 @@
-package swag.rest.bank_app_delivery.entity.internal;
+package swag.rest.bank_app_delivery.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import swag.rest.bank_app_delivery.entity.*;
 import swag.rest.bank_app_delivery.service.BankCore;
-import swag.rest.bank_app_delivery.service.internal.AccountListingServiceImpl;
+import swag.rest.bank_app_delivery.service.CreateAccountOperationUI;
 import swag.rest.bank_app_delivery.service.DBService;
 
 @Component
