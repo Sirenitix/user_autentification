@@ -54,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/logout").deleteCookies("token")
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST,  "/register","/authenticate").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.POST,  "/register").permitAll()
+                .and()
+                .authorizeRequests().antMatchers(HttpMethod.POST,  "/authenticate").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/users/**").hasAuthority("USER")
                 .and()
@@ -68,6 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**");
     }
 }

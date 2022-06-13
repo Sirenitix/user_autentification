@@ -49,13 +49,17 @@ public class AccountRestController  {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    TransactionTransfer transactionTransfer;
+
     JwtUtil jwtUtil;
 
 
     @PostMapping("/register")
     public ResponseEntity<User> save(@RequestBody User user) {
         User userEntity = userService.save(user);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{username}")
                 .buildAndExpand(userEntity.getUsername()).toUriString());
         return ResponseEntity.created(uri).build();
     }
@@ -116,19 +120,7 @@ public class AccountRestController  {
     @PostMapping("/accounts/{account_id}/transfer")
     public String transferAccount(@PathVariable("account_id")String account_id, @RequestParam("amount") double amount, @RequestBody Destination_account destination_account) throws Exception {
         String auth = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        double balance =  dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).getBalance();
-        System.out.println(destination_account.getDestination_account_id() + " destination_account");
-        if(balance >= amount && dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()){
-            transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()),amount, userService.findByUsername(auth).get().getId());
-            transactionDeposit.execute(
-                    dbService.getClientAccountById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000, userService.findById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000).get().getId()),
-                    amount,
-                    userService.findById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000).get().getId());
-        }else if(!dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()){
-            throw new Exception("You can't transfer from FIXED account");
-        }else {
-            throw new Exception("Not enough money");
-        }
+        transactionTransfer.execute(amount, destination_account, account_id, auth);
         return  "" + amount + "$ transferred from " + account_id + " to " + destination_account.getDestination_account_id();
     }
 
@@ -141,11 +133,9 @@ public class AccountRestController  {
     @PostMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@Valid @RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
         user.setRole("ROLE_USER");
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(),
-                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         Cookie cookie = new Cookie("token", jwt);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
