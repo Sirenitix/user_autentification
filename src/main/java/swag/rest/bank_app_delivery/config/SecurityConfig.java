@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import swag.rest.bank_app_delivery.jwt.CustomAuthenticationFilter;
 import swag.rest.bank_app_delivery.jwt.CustomAuthorizationFilter;
-import swag.rest.bank_app_delivery.service.internal.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -58,8 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers(HttpMethod.POST,  "/authenticate").permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/users/**").hasAuthority("USER")
-                .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilter(new CustomAuthenticationFilter(super.authenticationManagerBean()))
@@ -70,6 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**");
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**","/register");
     }
 }
