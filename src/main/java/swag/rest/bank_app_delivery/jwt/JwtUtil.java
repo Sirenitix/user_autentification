@@ -37,7 +37,7 @@ public abstract class JwtUtil {
                     .subject(username)
                     .issuer(issuer)
                     .claim("roles", roles)
-                    .expirationTime(new Date(now.getTime() + 10000))
+                    .expirationTime(new Date(now.getTime() + 100000000))
                     .issueTime(new Date())
                     .build();
 

@@ -10,6 +10,7 @@ import swag.rest.bank_app_delivery.service.BankCore;
 import swag.rest.bank_app_delivery.service.DBService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DBServiceImpl implements DBService {
@@ -22,6 +23,7 @@ public class DBServiceImpl implements DBService {
     private final String SQL_GET_ALL = "select * from account where clientid = ?";
     private final String SQL_GET_MAX_ID = "select max(bankid) from account";
     private final String SQL_FIND_ACCOUNT = "select * from account where bankID = ? and clientid = ?";
+    private final String SQL_FIND_ACCOUNT_BY_ID = "select * from account where bankID = ?";
     private final String SQL_INSERT_ACCOUNT = "insert into account(accountType, id, clientID,  bankID,  balance, withdrawAllowed) values(?, ?, ?, ?, ?, ?)";
     private final String SQL_UPDATE_BALANCE = "update account set balance = ? where bankid = ?";
 
@@ -47,6 +49,11 @@ public class DBServiceImpl implements DBService {
 
     public Account getClientAccountById(int id, int clientID) {
         return jdbcTemplate.queryForObject(SQL_FIND_ACCOUNT, new Object[] { id , clientID }, new AccountMapper());
+    }
+
+    @Override
+    public Optional<Account> getClientAccountByClientId(int id) {
+        return Optional.of(jdbcTemplate.queryForObject(SQL_FIND_ACCOUNT_BY_ID, new Object[] { id }, new AccountMapper()));
     }
 
     public int getClientAccountMaxId() {

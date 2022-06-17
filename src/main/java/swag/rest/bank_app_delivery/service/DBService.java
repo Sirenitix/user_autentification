@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import swag.rest.bank_app_delivery.entity.Account;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DBService {
@@ -13,6 +14,8 @@ public interface DBService {
     void createNewAccount(Account account);
 
     Account getClientAccountById(int id, int clientID);
+
+    Optional<Account> getClientAccountByClientId(int id);
 
     int getClientAccountMaxId();
 

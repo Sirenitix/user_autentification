@@ -8,17 +8,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class StudentNotFoundAdvice {
-//    @ResponseBody
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    String studentNotFound(Exception ex) {
-//        return ex.getMessage();
-//    }
-
     @ResponseBody
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    String fiveHundred(Exception ex) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String studentNotFound(Exception ex) {
+        if(ex.getMessage().contains("actual 0")){
+            return "Account not found";
+        }
         return ex.getMessage();
     }
+
 }

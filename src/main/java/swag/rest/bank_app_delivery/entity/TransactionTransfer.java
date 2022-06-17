@@ -27,7 +27,9 @@ public class TransactionTransfer {
         double balance =  dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService
                 .findByUsername(auth).get().getId()).getBalance();
             System.out.println(destination_account.getDestination_account_id() + " destination_account");
-            if(balance >= amount && dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()){
+            if(balance >= amount
+                    && dbService.getClientAccountById( Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()).isWithdrawAllowed()
+                    && dbService.getClientAccountByClientId(Integer.parseInt(destination_account.getDestination_account_id())-1000000).isPresent()){
             transactionWithdraw.execute((AccountWithdraw) dbService.getClientAccountById(Integer.parseInt(account_id) - 1000000, userService.findByUsername(auth).get().getId()),amount, userService.findByUsername(auth).get().getId());
             transactionDeposit.execute(
                     dbService.getClientAccountById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000, userService.findById(Integer.parseInt(destination_account.getDestination_account_id()) - 1000000).get().getId()),
