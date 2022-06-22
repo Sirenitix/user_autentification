@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 
 @RestController("/")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AccountRestController  {
 
     @Autowired
@@ -36,23 +35,26 @@ public class AccountRestController  {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Users> save(@RequestBody Users user) {
+    public ResponseEntity<Users> save(@RequestBody Users user, HttpServletResponse response) {
         Users userEntity = userService.save(user);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{username}")
                 .buildAndExpand(userEntity.getUsername()).toUriString());
+        response.setHeader("Access-Control-Allow-Origin", "*");
         return ResponseEntity.created(uri).build();
     }
 
 
     @Operation(description = "Login")
     @PostMapping("/login")
-    public void fakeLogin(@RequestBody Users user) {
+    public void fakeLogin(@RequestBody Users user, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@Valid @RequestBody Users user, HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         user.setRole("ROLE_USER");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -65,13 +67,15 @@ public class AccountRestController  {
 
     @Operation(description = "Logout")
     @PostMapping("/logout")
-    public void fakeLogout() {
+    public void fakeLogout(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
     @Operation(description = "Get Admin Credentials")
     @GetMapping("/admin")
-    public Admin getAdminCredentials() {
+    public Admin getAdminCredentials(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return new Admin(auth.getPrincipal().toString(), auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false);
     }
