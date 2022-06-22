@@ -93,8 +93,8 @@ public abstract class JwtUtil {
         jwtProcessor.process(signedJWT, null);
         JWTClaimsSet claims = signedJWT.getJWTClaimsSet();
         String username = claims.getSubject();
-        var roles = (List<String>) claims.getClaim("roles");
-        var authorities = roles == null ? null : roles.stream()
+        List<String> roles = (List<String>) claims.getClaim("roles");
+        List<SimpleGrantedAuthority> authorities = roles == null ? null : roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
