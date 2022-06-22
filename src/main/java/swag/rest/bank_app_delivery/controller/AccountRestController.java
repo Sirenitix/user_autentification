@@ -75,7 +75,8 @@ public class AccountRestController  {
     public Admin getAdminCredentials() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info(auth.getPrincipal().toString());
-        return new Admin(auth.getPrincipal().toString(), auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false);
+        boolean isAdmin = auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false;
+        return new Admin(auth.getPrincipal().toString(), isAdmin);
     }
 
 }
