@@ -2,6 +2,7 @@ package swag.rest.bank_app_delivery.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @RestController("/")
 @CrossOrigin(origins = "*")
 public class AccountRestController  {
@@ -70,9 +71,10 @@ public class AccountRestController  {
     }
 
     @Operation(description = "Get Admin Credentials")
-    @GetMapping("/admin")
+    @PostMapping("/admin")
     public Admin getAdminCredentials() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info(auth.getPrincipal().toString());
         return new Admin(auth.getPrincipal().toString(), auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false);
     }
 
