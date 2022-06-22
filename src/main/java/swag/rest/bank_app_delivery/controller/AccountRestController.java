@@ -59,7 +59,7 @@ public class AccountRestController  {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         Cookie cookie = new Cookie("token", jwt);
-        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return ResponseEntity.ok(jwt);
     }
