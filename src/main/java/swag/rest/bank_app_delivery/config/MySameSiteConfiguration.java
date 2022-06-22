@@ -9,7 +9,7 @@ public class MySameSiteConfiguration {
 
     @Bean
     public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
-        return CookieSameSiteSupplier.ofNone().whenHasNameMatching("token*");
+        return CookieSameSiteSupplier.ofNone().whenHasNameMatching("token");
     }
 
 }
