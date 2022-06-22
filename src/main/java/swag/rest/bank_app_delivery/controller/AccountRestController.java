@@ -3,7 +3,12 @@ package swag.rest.bank_app_delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
+import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,6 +68,8 @@ public class AccountRestController  {
         response.addCookie(cookie);
         return ResponseEntity.ok(jwt);
     }
+
+
 
     @Operation(description = "Logout")
     @PostMapping("/logout")
