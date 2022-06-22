@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import swag.rest.bank_app_delivery.entity.User;
+import swag.rest.bank_app_delivery.entity.Users;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -65,7 +65,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authentication) throws IOException, ServletException {
-        User user = (User)authentication.getPrincipal();
+        Users user = (Users)authentication.getPrincipal();
         String accessToken = JwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(),
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         String refreshToken = JwtUtil.createRefreshToken(user.getUsername());

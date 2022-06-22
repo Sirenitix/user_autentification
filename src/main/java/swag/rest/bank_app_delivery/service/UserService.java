@@ -1,15 +1,15 @@
 package swag.rest.bank_app_delivery.service;
 
 import org.springframework.stereotype.Service;
-import swag.rest.bank_app_delivery.entity.User;
+import swag.rest.bank_app_delivery.entity.Users;
 
 import java.util.Optional;
 
 @Service
 public interface UserService {
-    public User save(User user);
-    public Optional<User> findByUsername(String username);
-    public Optional<User> findById(Integer id);
+    public Users save(Users user);
+    public Optional<Users> findByUsername(String username);
+    public Optional<Users> findById(Integer id);
 
 
 }

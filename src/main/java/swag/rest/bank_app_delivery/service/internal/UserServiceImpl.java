@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import swag.rest.bank_app_delivery.dao.UserRepository;
-import swag.rest.bank_app_delivery.entity.User;
+import swag.rest.bank_app_delivery.entity.Users;
 import swag.rest.bank_app_delivery.service.UserService;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User save(User user) {
+    public Users save(Users user) {
         log.info("Saving user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public Optional<Users> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
+    public Optional<Users> findById(Integer id) {
         return userRepository.findById(id);
     }
 
