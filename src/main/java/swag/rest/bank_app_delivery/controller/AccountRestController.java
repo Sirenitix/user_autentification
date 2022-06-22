@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 
 @RestController("/")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountRestController  {
 
     @Autowired
