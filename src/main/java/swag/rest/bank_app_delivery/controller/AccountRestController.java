@@ -71,7 +71,7 @@ public class AccountRestController  {
     }
 
     @Operation(description = "Get Admin Credentials")
-    @PostMapping("/admin")
+    @GetMapping("/admin")
     public Admin getAdminCredentials() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info(auth.getPrincipal().toString());
