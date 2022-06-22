@@ -68,6 +68,11 @@ public class AccountRestController  {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
-
+    @Operation(description = "Get Admin Credentials")
+    @GetMapping("/admin")
+    public Admin getAdminCredentials() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return new Admin(auth.getPrincipal().toString(), auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false);
+    }
 
 }
