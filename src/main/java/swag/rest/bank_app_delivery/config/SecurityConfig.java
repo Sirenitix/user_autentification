@@ -5,6 +5,7 @@ import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,12 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
-        return (factory) -> factory.addContextCustomizers((context) -> {
-            LegacyCookieProcessor legacyCookieProcessor = new LegacyCookieProcessor();
-            legacyCookieProcessor.setSameSiteCookies(SameSiteCookies.NONE.getValue());
-            context.setCookieProcessor(legacyCookieProcessor);
-        });
+    public CookieSameSiteSupplier cookieSameSiteSupplier(){
+        return CookieSameSiteSupplier.ofNone();
     }
 
     @Override
