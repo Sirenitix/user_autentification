@@ -96,10 +96,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return configSource;
     }
 
-    @Bean
-    public CookieSameSiteSupplier cookieSameSiteSupplier(){
-        return CookieSameSiteSupplier.ofNone();
-    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
