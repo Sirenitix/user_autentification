@@ -70,7 +70,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         String refreshToken = JwtUtil.createRefreshToken(user.getUsername());
         Cookie cookie = new Cookie("token", accessToken);
-        cookie.setHttpOnly(true);
         response.addCookie(cookie);
         response.addHeader("access_token", accessToken);
         response.addHeader("refresh_token", refreshToken);

@@ -50,7 +50,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                             }
                         }
                     }   else  {
-                        System.out.println(token);
+                        System.out.println(token + " - token");
                         filterChain.doFilter(request, response);
                     }
 

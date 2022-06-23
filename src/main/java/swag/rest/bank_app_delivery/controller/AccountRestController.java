@@ -3,9 +3,7 @@ package swag.rest.bank_app_delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +41,7 @@ public class AccountRestController  {
 
 
     @PostMapping("/register")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Users> save(@RequestBody Users user) {
         Users userEntity = userService.save(user);
         URI uri = URI.create(ServletUriComponentsBuilder
@@ -55,24 +54,27 @@ public class AccountRestController  {
 
     @Operation(description = "Login")
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:3000")
     public void fakeLogin(@RequestBody Users user) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
 
     @PostMapping("/authenticate")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> authenticateUser(@Valid @RequestBody Users user, HttpServletRequest request, HttpServletResponse response) {
         user.setRole("ROLE_USER");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        ResponseCookie cookie = ResponseCookie.from("token", jwt).secure(true).sameSite("None").httpOnly(true).maxAge(99999999).build();
-        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        Cookie cookie = new Cookie("token", jwt);
+        response.addCookie(cookie);
         return ResponseEntity.ok(jwt);
     }
 
 
     @Operation(description = "Logout")
+    @CrossOrigin("http://localhost:3000")
     @PostMapping("/logout")
     public void fakeLogout() {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
@@ -80,6 +82,7 @@ public class AccountRestController  {
 
     @Operation(description = "Rated student list")
     @GetMapping("/admin")
+    @CrossOrigin(origins = "http://localhost:3000")
     public AdminCredentials aboutAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AdminCredentials adminCredentials = new AdminCredentials(
