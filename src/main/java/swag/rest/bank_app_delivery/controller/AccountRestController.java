@@ -66,7 +66,7 @@ public class AccountRestController  {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        ResponseCookie cookie = ResponseCookie.from("token", jwt).secure(true).sameSite("None").build();
+        ResponseCookie cookie = ResponseCookie.from("token", jwt).secure(true).sameSite("None").httpOnly(true).maxAge(99999999).build();
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(jwt);
     }
