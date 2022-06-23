@@ -3,7 +3,9 @@ package swag.rest.bank_app_delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +25,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
 import java.security.cert.PKIXParameters;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -62,14 +65,19 @@ public class AccountRestController  {
 
     @PostMapping("/authenticate")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<String> authenticateUser(@Valid @RequestBody Users user, HttpServletRequest request, HttpServletResponse response) {
+    public String authenticateUser(@Valid @RequestBody Users user, HttpServletRequest request, HttpServletResponse response) {
         user.setRole("ROLE_USER");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        Cookie cookie = new Cookie("token", jwt);
-        response.addCookie(cookie);
-        return ResponseEntity.ok(jwt);
+        ResponseCookie cookie = ResponseCookie.from("token", jwt) // key & value
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(Duration.ofHours(100))
+                .sameSite("None")  // sameSite
+                .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return jwt;
     }
 
 

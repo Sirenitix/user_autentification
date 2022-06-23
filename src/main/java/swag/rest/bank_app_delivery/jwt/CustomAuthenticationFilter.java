@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -66,11 +69,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authentication) throws IOException, ServletException {
         Users user = (Users)authentication.getPrincipal();
-        String accessToken = JwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(),
-                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        String accessToken = JwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         String refreshToken = JwtUtil.createRefreshToken(user.getUsername());
-        Cookie cookie = new Cookie("token", accessToken);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("token", accessToken) // key & value
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(Duration.ofHours(100))
+                .sameSite("None")
+                .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.addHeader("access_token", accessToken);
         response.addHeader("refresh_token", refreshToken);
     }

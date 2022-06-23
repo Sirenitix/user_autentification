@@ -34,22 +34,18 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = null;
-        Cookie[] cookies = request.getCookies();
-        if(request.getServletPath().equals("/login") || request.getServletPath().equals("/refreshToken")) {
+        if(request.getServletPath().equals("/login") || request.getServletPath().equals("/refreshToken") || request.getServletPath().equals("/authenticate")) {
             filterChain.doFilter(request, response);
         } else {
                 try {
-                    if (cookies != null) {
-                        for (Cookie cookie : cookies) {
-                            if (cookie.getName().equals("token")) {
-                                token = cookie.getValue();
+                    if (request.getHeader("token") != null) {
+                                token = request.getHeader("token");
                                 UsernamePasswordAuthenticationToken authenticationToken = JwtUtil.parseToken(token);
                                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                                 System.out.println(SecurityContextHolder.getContext().getAuthentication());
                                 filterChain.doFilter(request, response);
-                            }
                         }
-                    }   else  {
+                       else  {
                         System.out.println(token + " - token");
                         filterChain.doFilter(request, response);
                     }
