@@ -94,17 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().cacheControl();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); //only requests from these origins (URL of the web page) are accepted
-        config.setAllowedMethods(Arrays.asList("GET","POST"));
-        config.setAllowedHeaders(Arrays.asList("content-type"));
-        config.setAllowCredentials(true);   //this is important in preflight request (OPTIONS) to tell the browser, that it can send credentials, e.g. cookies along the subsequent request
-        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-        configSource.registerCorsConfiguration("/**", config);
-        return configSource;
-    }
+
 
 
     @Override
