@@ -2,13 +2,10 @@ package swag.rest.bank_app_delivery.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.LegacyCookieProcessor;
-import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,11 +23,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
+import java.security.cert.PKIXParameters;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Slf4j
+
 @RestController("/")
-@CrossOrigin(origins = "*")
 public class AccountRestController  {
 
     @Autowired
@@ -51,11 +52,13 @@ public class AccountRestController  {
     }
 
 
+
     @Operation(description = "Login")
     @PostMapping("/login")
     public void fakeLogin(@RequestBody Users user) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
+
 
     @PostMapping("/authenticate")
     public ResponseEntity<String> authenticateUser(@Valid @RequestBody Users user, HttpServletRequest request, HttpServletResponse response) {
@@ -63,11 +66,10 @@ public class AccountRestController  {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(),user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createAccessToken(user.getUsername(), request.getRequestURL().toString(), user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        Cookie cookie = new Cookie("token", jwt);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("token", jwt).secure(true).sameSite("None").build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(jwt);
     }
-
 
 
     @Operation(description = "Logout")
@@ -76,14 +78,16 @@ public class AccountRestController  {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
-    @Operation(description = "Get Admin Credentials")
+    @Operation(description = "Rated student list")
     @GetMapping("/admin")
-    public Admin getAdminCredentials() {
+    public AdminCredentials aboutAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        log.info(auth.getPrincipal().toString());
-        boolean isAdmin = auth.getAuthorities().toString() == "[ROLE_ADMIN]" ? true : false;
-        Admin admin = new Admin(auth.getPrincipal().toString(), isAdmin);
-        return admin;
+        AdminCredentials adminCredentials = new AdminCredentials(
+                auth.getPrincipal().toString(),
+                auth.getAuthorities().toString().equals("[ROLE_ADMIN]"));
+            return adminCredentials;
     }
+
+
 
 }
