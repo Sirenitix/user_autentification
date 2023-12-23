@@ -4,7 +4,6 @@ package swag.rest.bank_app_delivery.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,11 +31,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 
-@RestController("/")
+@RestController("/user")
 public class AccountRestController  {
 
     @Autowired
     UserService userService;
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -53,13 +53,17 @@ public class AccountRestController  {
         return ResponseEntity.created(uri).build();
     }
 
-
-
     @Operation(description = "Login")
     @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:3000")
     public void fakeLogin(@RequestBody Users user) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
+
+    @Operation(description = "Password renewal")
+    @PostMapping("/password")
+    public Users changePassword(@RequestBody String newPassword) {
+        return userService.changePassword(newPassword);
     }
 
 

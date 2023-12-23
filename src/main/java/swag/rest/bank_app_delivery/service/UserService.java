@@ -11,5 +11,5 @@ public interface UserService {
     public Optional<Users> findByUsername(String username);
     public Optional<Users> findById(Integer id);
 
-
+    Users changePassword(String newPassword);
 }
