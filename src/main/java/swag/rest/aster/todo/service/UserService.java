@@ -1,7 +1,7 @@
-package swag.rest.bank_app_delivery.service;
+package swag.rest.aster.todo.service;
 
 import org.springframework.stereotype.Service;
-import swag.rest.bank_app_delivery.entity.Users;
+import swag.rest.aster.todo.entity.Users;
 
 import java.util.Optional;
 

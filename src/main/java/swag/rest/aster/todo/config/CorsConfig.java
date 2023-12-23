@@ -1,4 +1,4 @@
-package swag.rest.bank_app_delivery.config;
+package swag.rest.aster.todo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

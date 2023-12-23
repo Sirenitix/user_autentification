@@ -1,8 +1,6 @@
-package swag.rest.bank_app_delivery.entity;
+package swag.rest.aster.todo.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Data;
 

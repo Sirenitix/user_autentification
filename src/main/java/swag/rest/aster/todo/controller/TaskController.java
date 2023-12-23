@@ -1,10 +1,8 @@
-package swag.rest.bank_app_delivery.controller;
+package swag.rest.aster.todo.controller;
 
 
-import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import swag.rest.bank_app_delivery.entity.Task;
-import swag.rest.bank_app_delivery.service.TaskService;
+import swag.rest.aster.todo.entity.Task;
+import swag.rest.aster.todo.service.TaskService;
 
 @RestController
 @RequestMapping("/task")

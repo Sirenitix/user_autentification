@@ -1,12 +1,12 @@
-package swag.rest.bank_app_delivery.service;
+package swag.rest.aster.todo.service;
 
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import swag.rest.bank_app_delivery.dao.TaskRepository;
-import swag.rest.bank_app_delivery.entity.Task;
+import swag.rest.aster.todo.dao.TaskRepository;
+import swag.rest.aster.todo.entity.Task;
 
 @Service
 @RequiredArgsConstructor

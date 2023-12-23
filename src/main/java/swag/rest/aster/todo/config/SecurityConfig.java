@@ -1,4 +1,4 @@
-package swag.rest.bank_app_delivery.config;
+package swag.rest.aster.todo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import swag.rest.bank_app_delivery.jwt.CustomAuthenticationFilter;
-import swag.rest.bank_app_delivery.jwt.CustomAuthorizationFilter;
+import swag.rest.aster.todo.jwt.CustomAuthenticationFilter;
+import swag.rest.aster.todo.jwt.CustomAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity

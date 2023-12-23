@@ -1,7 +1,13 @@
-package swag.rest.bank_app_delivery.controller;
+package swag.rest.aster.todo.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import java.net.URI;
+import java.time.Duration;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -11,24 +17,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import swag.rest.bank_app_delivery.entity.*;
-import swag.rest.bank_app_delivery.jwt.JwtUtil;
-import swag.rest.bank_app_delivery.service.UserService;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.net.URI;
-import java.security.Principal;
-import java.security.cert.PKIXParameters;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import swag.rest.aster.todo.entity.AdminCredentials;
+import swag.rest.aster.todo.entity.Users;
+import swag.rest.aster.todo.jwt.JwtUtil;
+import swag.rest.aster.todo.service.UserService;
 
 
 @RestController("/user")
@@ -92,7 +90,7 @@ public class AccountRestController  {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
-    @Operation(description = "Rated student list")
+    @Operation(description = "List")
     @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public AdminCredentials aboutAdmin() {
